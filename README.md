@@ -3,4 +3,4 @@
 ### Official implementation of the paper: "SinGAN: Learning a Generative Model from a Single Natural Image"
 ####  ICCV 2019
 
-
+![random samples from a single image](imgs/teaser.png)
