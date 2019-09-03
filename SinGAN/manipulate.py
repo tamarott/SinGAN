@@ -80,7 +80,7 @@ def generate_gif(Gs,Zs,reals,NoiseAmp,opt,alpha=0.1,beta=0.9,start_scale=2,fps=1
         count += 1
     dir2save = functions.generate_dir2save(opt)
     try:
-        os.makedirs(dir2save)
+        os.makedirs('%s/start_scale=%d' % (dir2save,start_scale) )
     except OSError:
         pass
     imageio.mimsave('%s/start_scale=%d/alpha=%f_beta=%f.gif' % (dir2save,start_scale,alpha,beta),images_cur,fps=fps)
@@ -119,8 +119,8 @@ def SinGAN_generate(Gs,Zs,reals,NoiseAmp,opt,in_s=None,scale_v=1,scale_h=1,n=0,g
                 I_prev = imresize(I_prev,1/opt.scale_factor, opt)
                 I_prev = I_prev[:,:,0:round(scale_v*reals[n].shape[2]),0:round(scale_h*reals[n].shape[3])]
                 I_prev = m(I_prev)
-                #I_prev = I_prev[:,:,0:z_curr.shape[2],0:z_curr.shape[3]]
-                #I_prev = functions.upsampling(I_prev,z_curr.shape[2],z_curr.shape[3])
+                I_prev = I_prev[:,:,0:z_curr.shape[2],0:z_curr.shape[3]]
+                I_prev = functions.upsampling(I_prev,z_curr.shape[2],z_curr.shape[3])
 
             if n < gen_start_scale:
                 z_curr = Z_opt

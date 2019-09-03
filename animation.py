@@ -23,10 +23,6 @@ if __name__ == '__main__':
     if (os.path.exists(dir2save)):
         print("output already exist")
     else:
-        try:
-            os.makedirs(dir2save)
-        except OSError:
-            pass
         opt.min_size = 20
         opt.mode = 'animation_train'
         real = functions.read_image(opt)
@@ -38,6 +34,10 @@ if __name__ == '__main__':
         else:
             train(opt, Gs, Zs, reals, NoiseAmp)
             opt.mode = 'animation'
+        try:
+            os.makedirs(dir2save)
+        except OSError:
+            pass
         for start_scale in range(0, 3, 1):
             for b in range(80, 100, 5):
                 #opt.animation_start_scale = start_scale

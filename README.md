@@ -7,19 +7,20 @@ pytorch imlementation for SinGAN, which learns a generative model from a single 
 
 ![](imgs/teaser.PNG)
 
-
-% SinGAN can be also use to a line of image manipulation task, for example
-% ![](imgs/teaser.PNG)
+<!--- 
+// SinGAN can be also use to a line of image manipulation task, for example
+ ![](imgs/manipulation.PNG)
+ --->
 
 ###  train
-The train SinGAN model on your own training image, put the desire single training image under Input/Images, and run
+To train SinGAN model on your own training image, put the desire single training image under Input/Images, and run
 
 ```
 python train.py --input_name <input_file_name>
 ```
 
 
-This will also generate random samples starting from the coarsest scale of the resulting trained model.
+This will also generate random samples starting from the coarsest scale (n=0) of the resulting trained model.
 
 ###  generate random samples
 To generate random samples from any starting generation scale, please first train SinGAN model for the desire image (as described above), then run 
@@ -27,6 +28,7 @@ To generate random samples from any starting generation scale, please first trai
 ```
 python train.py --input_name <input_file_name> --mode random_samples --gen_start_scale <generation start scale number>
 ```
+
 pay attention: for using the full model, specify the generation start scale number to be 0, to start the generation from the second scale, specify it to be 1, and so on. 
 
 ###  generate random samples of arbitrery sizes
@@ -34,12 +36,19 @@ To generate random samples of arbitrery sizes, please first train SinGAN model f
 
 ```
 python train.py --input_name <input_file_name> --mode random_samples_arbitrary_sizes --scale_h <horizontal scaling factor> --scale_v <vertical scaling factor>
-
+```
 
 ###  generate animation from a single image
 
+To generate random samples of arbitrery sizes, please first train SinGAN model for the desire image (as described above), then run 
 
-If you use this code for your research, please cite our papers.
+```
+python train.py --input_name <input_file_name> --mode random_samples_arbitrary_sizes --scale_h <horizontal scaling factor> --scale_v <vertical scaling factor>
+```
+
+
+### citation
+If you use this code for your research, please cite our papers:
 
 ```
 @inproceedings{shaham2019singan,
