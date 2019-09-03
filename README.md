@@ -13,7 +13,7 @@ put the desire single training image under Input/Images
 '''
 python train.py --input_name <input_file_name>
 '''
-
+This 
 ####  generate random samples
 
 
