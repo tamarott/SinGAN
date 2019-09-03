@@ -9,11 +9,14 @@ pytorch imlementation for SinGAN, which learns a generative model from a single 
 
 
 ####  train
-put the desire single training image under Input/Images
+The train SinGAN model on your own training image, put the desire single training image under Input/Images, and run
+
 '''
 python train.py --input_name <input_file_name>
 '''
-This 
+
+This will also generate random samples starting from the coarser scale.
+
 ####  generate random samples
 
 
