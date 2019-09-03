@@ -9,8 +9,16 @@ pytorch imlementation for SinGAN, which learns a generative model from a single 
 
 
 ####  train
+put the desire single training image under Input/Images
 '''
-python train.py --input_name birds.png
+python train.py --input_name <input_file_name>
 '''
 
 ####  generate random samples
+
+
+####  generate random samples of arbitrery sizes
+
+
+####  generate animation from a single image
+

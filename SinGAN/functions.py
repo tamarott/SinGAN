@@ -258,7 +258,7 @@ def generate_dir2save(opt):
     elif opt.mode == 'random_samples_arbitrary_sizes':
         dir2save = '%s/RandomSamples_ArbitrerySizes/%s/scale_v=%f_scale_h=%f' % (opt.out,opt.input_name[:-4], opt.scale_v, opt.scale_h)
     elif opt.mode == 'animation':
-        dir2save = '%s/Animation/%s/start_scale=%d' % (opt.out, opt.input_name[:-4], opt.animation_start_scale)
+        dir2save = '%s/Animation/%s' % (opt.out, opt.input_name[:-4])
     elif opt.mode == 'SR':
         dir2save = '%s/SR/%s/SR_factor=%f' % (opt.out, opt.input_name[:-4], opt.sr_factor)
     elif opt.mode == 'SR_multi':

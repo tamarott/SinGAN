@@ -348,13 +348,13 @@ def draw_concat(Gs,Zs,reals,NoiseAmp,in_s,mode,m_noise,m_image,opt):
         if mode == 'rec':
             count = 0
             for G,Z_opt,real_next,noise_amp in zip(Gs,Zs,reals[1:],NoiseAmp):
-                G_z = m_image(G_z)
+                #G_z = m_image(G_z)
                 z_in = noise_amp*Z_opt+G_z
                 G_z = G(z_in.detach(),G_z)
                 G_z = imresize(G_z,1/opt.scale_factor,opt)
                 G_z = G_z[:,:,0:real_next.shape[2],0:real_next.shape[3]]
-                #if count != (len(Gs)-1):
-                #    G_z = m_image(G_z)
+                if count != (len(Gs)-1):
+                    G_z = m_image(G_z)
                 count += 1
     return G_z
 
@@ -375,19 +375,3 @@ def init_models(opt):
     print(netD)
 
     return netD, netG
-
-'''
-if __name__ == '__main__':
-    opt = get_arguments()
-    real_ = functions.read_image(opt)
-    functions.adjust_scales2image(real_,opt)
-    Gs = []
-    Zs = []
-    reals = []
-    NoiseAmp = []
-    train(opt,Gs,Zs,reals,NoiseAmp)
-
-    # if already exist a trained, error
-
-    random_sample(Gs,Zs,reals,NoiseAmp,opt)
-'''
