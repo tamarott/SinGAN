@@ -12,8 +12,6 @@ With SinGN, you can train a generative model from a single natural image, and th
  ![](imgs/manipulation.PNG)
  --->
 
-## Quick start 
-
 ###  Train
 To train SinGAN model on your own image, put the desire training image under Input/Images, and run
 
