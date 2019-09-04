@@ -25,7 +25,7 @@ This will also use the resulting trained model to generate random samples starti
 To generate random samples from any starting generation scale, please first train SinGAN model for the desire image (as described above), then run 
 
 ```
-python train.py --input_name <input_file_name> --mode random_samples --gen_start_scale <generation start scale number>
+python random_samples.py --input_name <input_file_name> --mode random_samples --gen_start_scale <generation start scale number>
 ```
 
 pay attention: for using the full model, specify the generation start scale to be 0, to start the generation from the second scale, specify it to be 1, and so on. 
@@ -34,7 +34,7 @@ pay attention: for using the full model, specify the generation start scale to b
 To generate random samples of arbitrery sizes, please first train SinGAN model for the desire image (as described above), then run 
 
 ```
-python train.py --input_name <input_file_name> --mode random_samples_arbitrary_sizes --scale_h <horizontal scaling factor> --scale_v <vertical scaling factor>
+python random_samples.py --input_name <input_file_name> --mode random_samples_arbitrary_sizes --scale_h <horizontal scaling factor> --scale_v <vertical scaling factor>
 ```
 
 ###  generate animation from a single image
