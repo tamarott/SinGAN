@@ -3,7 +3,7 @@
 ### Official pytorch implementation of the paper: "SinGAN: Learning a Generative Model from a Single Natural Image"
 ####  ICCV 2019
 
-With SinGN, you can train a generative model from a single natural image, and then generate random samples form the given image, for example:
+With SinGAN, you can train a generative model from a single natural image, and then generate random samples form the given image, for example:
 
 ![](imgs/teaser.PNG)
 

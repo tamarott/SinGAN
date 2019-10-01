@@ -42,9 +42,17 @@ def torch2uint8(x):
 
 
 def imresize(im,scale,opt):
-    s = im.shape
+    #s = im.shape
     im = torch2uint8(im)
     im = imresize_in(im, scale_factor=scale)
+    im = np2torch(im,opt)
+    #im = im[:, :, 0:int(scale * s[2]), 0:int(scale * s[3])]
+    return im
+
+def imresize_to_shape(im,output_shape,opt):
+    #s = im.shape
+    im = torch2uint8(im)
+    im = imresize_in(im, output_shape=output_shape)
     im = np2torch(im,opt)
     #im = im[:, :, 0:int(scale * s[2]), 0:int(scale * s[3])]
     return im

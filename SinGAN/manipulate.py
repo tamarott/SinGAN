@@ -144,39 +144,3 @@ def SinGAN_generate(Gs,Zs,reals,NoiseAmp,opt,in_s=None,scale_v=1,scale_h=1,n=0,g
         n+=1
     return I_curr.detach()
 
-def SinGAN_SR(opt,Gs,Zs,reals,NoiseAmp):
-    mode = opt.mode
-    in_scale, iter_num = functions.calc_init_scale(opt)
-    opt.scale_factor = 1 / in_scale
-    opt.scale_factor_init = 1 / in_scale
-    opt.mode = 'SR_train'
-    #opt.alpha = 100
-    opt.stop_scale = 0
-    dir2trained_model = functions.generate_dir2save(opt)
-    if (os.path.exists(dir2trained_model)):
-        #print('Trained model does not exist, training SinGAN for SR')
-        Gs, Zs, reals, NoiseAmp = functions.load_trained_pyramid(opt)
-        opt.mode = mode
-    else:
-        SR_train(opt,Gs,Zs,reals,NoiseAmp)
-        opt.mode = mode
-    print('%f' % pow(in_scale,iter_num))
-    Zs_sr = []
-    reals_sr = []
-    NoiseAmp_sr = []
-    Gs_sr = []
-    real = reals[-1]#read_image(opt)
-    for j in range(1,iter_num+1,1):
-        real_ = imresize(real,pow(1/opt.scale_factor,j),opt)
-        real_ = real_[:, :, 0:int(pow(1 / opt.scale_factor, j) * real.shape[2]),0:int(pow(1 / opt.scale_factor, j) * real.shape[3])]
-        reals_sr.append(real_)
-        Gs_sr.append(Gs[-1])
-        NoiseAmp_sr.append(NoiseAmp[-1])
-        z_opt = torch.full(real_.shape, 0, device=opt.device)
-        m = nn.ZeroPad2d(5)
-        z_opt = m(z_opt)
-        Zs_sr.append(z_opt)
-    out = SinGAN_generate(Gs_sr, Zs_sr,reals_sr,NoiseAmp_sr, opt,in_s=reals_sr[0], num_samples=1)
-    dir2save = functions.generate_dir2save(opt)
-    plt.imsave('%s.png' % (dir2save), functions.convert_image_np(out.detach()), vmin=0,vmax=1)
-    return

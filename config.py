@@ -47,8 +47,6 @@ def get_arguments():
     # SR
     parser.add_argument('--sr_factor', type=float, help='Super resolution factor', default=4)
     #harmonization,editing
-    parser.add_argument('--ref_dir', help='input paint dir', default='Input/Edit')
-    parser.add_argument('--ref_name', help='ref image name', default='stone_edit.png')
     #parser.add_argument('--mask_name', help='mask image name', default='birds_mask.png')
     parser.add_argument('--editing_start_scale', type=int, help='editing start scale', default=3)
     #parser.add_argument('--harmonization_start_scale', type=int, help='harmonization start scale', default=0)
