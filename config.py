@@ -41,20 +41,5 @@ def get_arguments():
     parser.add_argument('--lambda_grad',type=float, help='gradient penelty weight',default=0.1)
     parser.add_argument('--alpha',type=int, help='reconstruction loss weight',default=10)
 
-    # MANIPULATIONS PARAMETERS
-    # random_samples
-    # animation
-    # SR
-    parser.add_argument('--sr_factor', type=float, help='Super resolution factor', default=4)
-    #harmonization,editing
-    #parser.add_argument('--mask_name', help='mask image name', default='birds_mask.png')
-    parser.add_argument('--editing_start_scale', type=int, help='editing start scale', default=3)
-    #parser.add_argument('--harmonization_start_scale', type=int, help='harmonization start scale', default=0)
-    #paint2image
-    parser.add_argument('--paint_dir', help='input paint dir', default='Input/Paints')
-    parser.add_argument('--paint_name', help='paint image name', default='trees3_paint2.png')
-    parser.add_argument('--paint_start_scale', type=int, help='paint start scale', default=2)
-    parser.add_argument('--quantization_flag', type=bool, help='quantization_flag', default=True)
-    parser.add_argument('--quantization_levels', type=int, help='paint quantization levels', default=5)
-
+    
     return parser
