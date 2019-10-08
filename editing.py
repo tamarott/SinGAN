@@ -9,10 +9,10 @@ if __name__ == '__main__':
     parser = get_arguments()
     parser.add_argument('--input_dir', help='input image dir', default='Input/Images')
     parser.add_argument('--input_name', help='training image name', required=True)
-    parser.add_argument('--ref_dir', help='input reference dir', default='Input/Harmonization')
+    parser.add_argument('--ref_dir', help='input reference dir', default='Input/Editing')
     parser.add_argument('--ref_name', help='reference image name', required=True)
-    parser.add_argument('--harmonization_start_scale', help='harmonization injection scale', type=int, required=True)
-    parser.add_argument('--mode', help='task to be done', default='harmonization')
+    parser.add_argument('--editing_start_scale', help='editing injection scale', type=int, required=True)
+    parser.add_argument('--mode', help='task to be done', default='editing')
     opt = parser.parse_args()
     opt = functions.post_config(opt)
     Gs = []

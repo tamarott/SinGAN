@@ -263,14 +263,12 @@ def generate_dir2save(opt):
         dir2save = '%s/Animation/%s' % (opt.out, opt.input_name[:-4])
     elif opt.mode == 'SR':
         dir2save = '%s/SR/%s/SR_factor=%f' % (opt.out, opt.input_name[:-4], opt.sr_factor)
-    elif opt.mode == 'SR_multi':
-        dir2save = '%s/SR/BSD100_%d/%s' % (opt.out, opt.alpha, opt.input_name[:-4])
     elif opt.mode == 'harmonization':
-        dir2save = '%s/harmonization/%s/%s_out' % (opt.out, opt.input_name[:-4],opt.ref_name[:-4])
+        dir2save = '%s/Harmonization/%s/%s_out' % (opt.out, opt.input_name[:-4],opt.ref_name[:-4])
     elif opt.mode == 'editing':
-        dir2save = '%s/edit/%s/%s_out' % (opt.out, opt.input_name[:-4],opt.ref_name[:-4])
+        dir2save = '%s/Editing/%s/%s_out' % (opt.out, opt.input_name[:-4],opt.ref_name[:-4])
     elif opt.mode == 'paint2image':
-        dir2save = '%s/paint2image/%s/start_scale=%d/%s_out' % (opt.out, opt.input_name[:-4],opt.paint_start_scale,opt.paint_name[:-4])
+        dir2save = '%s/Paint2image/%s/start_scale=%d/%s_out' % (opt.out, opt.input_name[:-4],opt.paint_start_scale,opt.paint_name[:-4])
     return dir2save
 
 def post_config(opt):
