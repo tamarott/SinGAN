@@ -7,9 +7,10 @@ With SinGAN, you can train a generative model from a single natural image, and t
 
 ![](imgs/teaser.PNG)
 
-
+<!--- 
 // SinGAN can be also use to a line of image manipulation task, for example
  ![](imgs/manipulation.PNG)
+ --->
 
 ###  Train
 To train SinGAN model on your own image, put the desire training image under Input/Images, and run
