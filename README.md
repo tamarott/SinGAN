@@ -25,7 +25,7 @@ This will also use the resulting trained model to generate random samples starti
 To generate random samples from any starting generation scale, please first train SinGAN model for the desire image (as described above), then run 
 
 ```
-python random_samples.py --input_name <input_file_name> --mode random_samples --gen_start_scale <generation start scale number>
+python random_samples.py --input_name <training_image_file_name> --mode random_samples --gen_start_scale <generation start scale number>
 ```
 
 pay attention: for using the full model, specify the generation start scale to be 0, to start the generation from the second scale, specify it to be 1, and so on. 
@@ -34,7 +34,7 @@ pay attention: for using the full model, specify the generation start scale to b
 To generate random samples of arbitrery sizes, please first train SinGAN model for the desire image (as described above), then run 
 
 ```
-python random_samples.py --input_name <input_file_name> --mode random_samples_arbitrary_sizes --scale_h <horizontal scaling factor> --scale_v <vertical scaling factor>
+python random_samples.py --input_name <training_image_file_name> --mode random_samples_arbitrary_sizes --scale_h <horizontal scaling factor> --scale_v <vertical scaling factor>
 ```
 
 ###  Animation from a single image
@@ -46,6 +46,17 @@ python animation.py --input_name <input_file_name>
 ```
 
 This will automatically start a new training phase with noise padding mode.
+
+###  Harmonization
+
+To harmonize a pasted object into an image, please first train SinGAN model for the desire image (as described above), then save the naively pasted reference image and it's binary mask under "Input/Harmonization" (see saved images for an example). Run the command
+
+```
+python harmonization.py --input_name <training_image_file_name> --ref_name <naively_pasted_reference_image_file_name> --harmonization_start_scale <scale to inject>
+
+```
+
+Please note that different injection scale will produce different harmonization effects. The coarsest injection scale equals 1. 
 
 ### Citation
 If you use this code for your research, please cite our papers:

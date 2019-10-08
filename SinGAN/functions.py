@@ -336,6 +336,10 @@ def dilate_mask(mask,opt):
     mask = np2torch(mask,opt)
     opt.nc_im = nc_im
     mask = mask.expand(1, 3, mask.shape[2], mask.shape[3])
+    plt.imsave('%s/%s_mask_dilated.png' % (opt.ref_dir, opt.ref_name[:-4]), convert_image_np(mask), vmin=0,vmax=1)
+    mask = (mask-mask.min())/(mask.max()-mask.min())
+    mask[mask < 0] = 0
+    mask[mask > 0.1] = 1
     return mask
 
 
