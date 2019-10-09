@@ -339,7 +339,7 @@ def dilate_mask(mask,opt):
     if opt.mode == "harmonization":
         element = morphology.disk(radius=7)
     if opt.mode == "editing":
-        element = morphology.disk(radius=14)
+        element = morphology.disk(radius=20)
     mask = torch2uint8(mask)
     mask = mask[:,:,0]
     mask = morphology.binary_dilation(mask,selem=element)
