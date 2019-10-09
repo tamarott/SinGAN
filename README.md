@@ -16,7 +16,7 @@ With SinGAN, you can train a generative model from a single natural image, and t
 To train SinGAN model on your own image, put the desire training image under Input/Images, and run
 
 ```
-python train.py --input_name <input_file_name>
+python main_train.py --input_name <input_file_name>
 ```
 
 This will also use the resulting trained model to generate random samples starting from the coarsest scale (n=0).
@@ -57,6 +57,17 @@ python harmonization.py --input_name <training_image_file_name> --ref_name <naiv
 ```
 
 Please note that different injection scale will produce different harmonization effects. The coarsest injection scale equals 1. 
+
+###  Editing
+
+To edit an image, (See example in Fig. 12 in [our paper](https://arxiv.org/pdf/1905.01164.pdf)), please first train SinGAN model on the desire non-edited image (as described above), then save the naive edit as a reference image under "Input/Editing" with a corresponding binary map (see saved images for an example). Run the command
+
+```
+python editing.py --input_name <training_image_file_name> --ref_name <edited_image_file_name> --editing_start_scale <scale to inject>
+
+```
+both the masked and unmasked output will be saved.
+Here as well, different injection scale will produce different editing effects. The coarsest injection scale equals 1. 
 
 ### Citation
 If you use this code for your research, please cite our papers:
