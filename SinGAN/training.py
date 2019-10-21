@@ -19,6 +19,10 @@ def train(opt,Gs,Zs,reals,NoiseAmp):
     while scale_num<opt.stop_scale+1:
         opt.nfc = min(opt.nfc_init * pow(2, math.floor(scale_num / 4)), 128)
         opt.min_nfc = min(opt.min_nfc_init * pow(2, math.floor(scale_num / 4)), 128)
+        if opt.fast_training:
+            if (scale_num > 0) & (scale_num % 4==0):
+                opt.niter = opt.niter//2
+
         '''
         if (scale_num == opt.stop_scale):
             opt.nfc = 128
@@ -33,7 +37,7 @@ def train(opt,Gs,Zs,reals,NoiseAmp):
 
         #plt.imsave('%s/in.png' %  (opt.out_), functions.convert_image_np(real), vmin=0, vmax=1)
         #plt.imsave('%s/original.png' %  (opt.out_), functions.convert_image_np(real_), vmin=0, vmax=1)
-        plt.imsave('%s/in_scale.png' %  (opt.outf), functions.convert_image_np(reals[scale_num]), vmin=0, vmax=1)
+        plt.imsave('%s/real_scale.png' %  (opt.outf), functions.convert_image_np(reals[scale_num]), vmin=0, vmax=1)
 
         D_curr,G_curr = init_models(opt)
         if (nfc_prev==opt.nfc):
@@ -69,7 +73,7 @@ def train_single_scale(netD,netG,reals,Gs,Zs,in_s,NoiseAmp,opt,centers=None):
     opt.nzx = real.shape[2]#+(opt.ker_size-1)*(opt.num_layer)
     opt.nzy = real.shape[3]#+(opt.ker_size-1)*(opt.num_layer)
     opt.receptive_field = opt.ker_size + ((opt.ker_size-1)*(opt.num_layer-1))*opt.stride
-    pad_noise = int(((opt.ker_size-1)*opt.num_layer)/2)
+    pad_noise = int(((opt.ker_size - 1) * opt.num_layer) / 2)
     pad_image = int(((opt.ker_size - 1) * opt.num_layer) / 2)
     if opt.mode == 'animation_train':
         opt.nzx = real.shape[2]+(opt.ker_size-1)*(opt.num_layer)

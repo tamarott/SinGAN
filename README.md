@@ -7,10 +7,9 @@ With SinGAN, you can train a generative model from a single natural image, and t
 
 ![](imgs/teaser.PNG)
 
-<!--- 
 // SinGAN can be also use to a line of image manipulation task, for example
  ![](imgs/manipulation.PNG)
- --->
+This is done by injecting an image to the already trained model. See section 4 in our [paper](https://arxiv.org/pdf/1905.01164.pdf) for more details.
 
 ###  Train
 To train SinGAN model on your own image, put the desire training image under Input/Images, and run
@@ -69,8 +68,17 @@ python editing.py --input_name <training_image_file_name> --ref_name <edited_ima
 both the masked and unmasked output will be saved.
 Here as well, different injection scale will produce different editing effects. The coarsest injection scale equals 1. 
 
+### Super Resolution
+To super resolve an image, Please run:
+```
+python3 SR.py --input_name <LR_image_file_name>
+```
+This will aoutomatically train a SinGAN model correspond to 4x upsampling factor (if not exist already).
+For different SR factors, please specify it using the parametr 'sr_factor' when calling the function.
+SinGAN's results on BSD100 dataset can be download from the Downloads folder.
+
 ### Citation
-If you use this code for your research, please cite our papers:
+If you use this code for your research, please cite our paper:
 
 ```
 @inproceedings{shaham2019singan,

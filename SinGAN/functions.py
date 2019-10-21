@@ -213,15 +213,17 @@ def adjust_scales2image(real_,opt):
     return real
 
 def adjust_scales2image_SR(real_,opt):
-    opt.num_scales = int((math.log(math.pow(opt.min_size / (real_.shape[2]), 1), opt.scale_factor_init))) + 1
+    #'''
+    opt.min_size = 18
+    opt.num_scales = int((math.log(math.pow(opt.min_size / (min([real_.shape[2],real_.shape[3]])), 1), opt.scale_factor_init))) + 1
     scale2stop = int(math.log(min([opt.max_size, max([real_.shape[2], real_.shape[3]])]) / max([real_.shape[2], real_.shape[3]]),opt.scale_factor_init))
     opt.stop_scale = opt.num_scales - scale2stop
-    opt.scale1 = 1#min(opt.max_size / max([real_.shape[2], real_.shape[3]]),1)  # min(250/max([real_.shape[0],real_.shape[1]]),1)
-    real = real_#imresize(real_, opt.scale1, opt)
-    #opt.scale_factor = math.pow(opt.min_size / (real.shape[2]), 1 / (opt.stop_scale))
+    opt.scale1 = min(opt.max_size / max([real_.shape[2], real_.shape[3]]),1)  # min(250/max([real_.shape[0],real_.shape[1]]),1)
+    real = imresize(real_, opt.scale1, opt)
+    opt.scale_factor = math.pow(opt.min_size / (min([real_.shape[2],real_.shape[3]])), 1 / (opt.stop_scale))
     # opt.scale_factor = math.pow(opt.min_size/(min(real_.shape[0],real_.shape[1])),1/(opt.stop_scale))
-    #scale2stop = int(math.log(min([opt.max_size, max([real_.shape[2], real_.shape[3]])]) / max([real_.shape[2], real_.shape[3]]),opt.scale_factor_init))
-    #opt.stop_scale = opt.num_scales - scale2stop
+    scale2stop = int(math.log(min([opt.max_size, max([real_.shape[2], real_.shape[3]])]) / max([real_.shape[2], real_.shape[3]]),opt.scale_factor_init))
+    opt.stop_scale = opt.num_scales - scale2stop
     return real
 
 def creat_reals_pyramid(real,reals,opt):
@@ -292,6 +294,8 @@ def post_config(opt):
     opt.min_nfc_init = opt.min_nfc
     opt.scale_factor_init = opt.scale_factor
     opt.out_ = 'TrainedModels/%s/scale_factor=%f/' % (opt.input_name[:-4], opt.scale_factor)
+    if opt.mode == 'SR':
+        opt.alpha = 100
 
     if opt.manualSeed is None:
         opt.manualSeed = random.randint(1, 10000)

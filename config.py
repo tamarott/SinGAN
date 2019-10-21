@@ -32,6 +32,7 @@ def get_arguments():
 
     #optimization hyper parameters:
     parser.add_argument('--niter', type=int, default=2000, help='number of epochs to train per scale')
+    parser.add_argument('--fast_training', type=bool, help='fast training flag', default=False)
     parser.add_argument('--gamma',type=float,help='scheduler gamma',default=0.1)
     parser.add_argument('--lr_g', type=float, default=0.0005, help='learning rate, default=0.0005')
     parser.add_argument('--lr_d', type=float, default=0.0005, help='learning rate, default=0.0005')
@@ -39,7 +40,7 @@ def get_arguments():
     parser.add_argument('--Gsteps',type=int, help='Generator inner steps',default=3)
     parser.add_argument('--Dsteps',type=int, help='Discriminator inner steps',default=3)
     parser.add_argument('--lambda_grad',type=float, help='gradient penelty weight',default=0.1)
-    parser.add_argument('--alpha',type=int, help='reconstruction loss weight',default=10)
+    parser.add_argument('--alpha',type=float, help='reconstruction loss weight',default=10)
 
     
     return parser
