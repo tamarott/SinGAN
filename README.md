@@ -11,7 +11,7 @@ With SinGAN, you can train a generative model from a single natural image, and t
 
 
 ## SinGAN's applications
-SinGAN can be also use to a line of image manipulation task, for example
+SinGAN can be also use to a line of image manipulation task, for example:
  ![](imgs/manipulation.PNG)
 This is done by injecting an image to the already trained model. See section 4 in our [paper](https://arxiv.org/pdf/1905.01164.pdf) for more details.
 
