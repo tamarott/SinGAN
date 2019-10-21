@@ -3,11 +3,15 @@
 ### Official pytorch implementation of the paper: "SinGAN: Learning a Generative Model from a Single Natural Image"
 ####  ICCV 2019
 
+
+## Random samples from a *single* image
 With SinGAN, you can train a generative model from a single natural image, and then generate random samples form the given image, for example:
 
 ![](imgs/teaser.PNG)
 
-// SinGAN can be also use to a line of image manipulation task, for example
+
+## SinGAN's applications
+SinGAN can be also use to a line of image manipulation task, for example
  ![](imgs/manipulation.PNG)
 This is done by injecting an image to the already trained model. See section 4 in our [paper](https://arxiv.org/pdf/1905.01164.pdf) for more details.
 
