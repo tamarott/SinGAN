@@ -282,7 +282,9 @@ def generate_dir2save(opt):
     elif opt.mode == 'editing':
         dir2save = '%s/Editing/%s/%s_out' % (opt.out, opt.input_name[:-4],opt.ref_name[:-4])
     elif opt.mode == 'paint2image':
-        dir2save = '%s/Paint2image/%s/start_scale=%d/%s_out' % (opt.out, opt.input_name[:-4],opt.paint_start_scale,opt.paint_name[:-4])
+        dir2save = '%s/Paint2image/%s/%s_out' % (opt.out, opt.input_name[:-4],opt.ref_name[:-4])
+        if opt.quantization_flag:
+            dir2save = '%s_quantized' % dir2save
     return dir2save
 
 def post_config(opt):
@@ -314,7 +316,7 @@ def calc_init_scale(opt):
 
 def quant(prev):
     arr = prev.reshape((-1, 3)).cpu()
-    kmeans = KMeans(n_clusters=3, random_state=0).fit(arr)
+    kmeans = KMeans(n_clusters=5, random_state=0).fit(arr)
     labels = kmeans.labels_
     centers = kmeans.cluster_centers_
     x = centers[labels]
@@ -326,7 +328,7 @@ def quant(prev):
 
 def quant2centers(paint, centers):
     arr = paint.reshape((-1, 3)).cpu()
-    kmeans = KMeans(n_clusters=3, init=centers, n_init=1).fit(arr)
+    kmeans = KMeans(n_clusters=5, init=centers, n_init=1).fit(arr)
     labels = kmeans.labels_
     #centers = kmeans.cluster_centers_
     x = centers[labels]

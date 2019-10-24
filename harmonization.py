@@ -2,6 +2,7 @@ from config import get_arguments
 from SinGAN.manipulate import *
 from SinGAN.training import *
 from SinGAN.imresize import imresize
+from SinGAN.imresize import imresize_to_shape
 import SinGAN.functions as functions
 
 
@@ -38,9 +39,9 @@ if __name__ == '__main__':
             ref = functions.read_image_dir('%s/%s' % (opt.ref_dir, opt.ref_name), opt)
             mask = functions.read_image_dir('%s/%s_mask%s' % (opt.ref_dir,opt.ref_name[:-4],opt.ref_name[-4:]), opt)
             if ref.shape[3] != real.shape[3]:
-                mask = imresize(mask, real.shape[3]/ref.shape[3], opt)
+                mask = imresize_to_shape(mask, [real.shape[2], real.shape[3]], opt)
                 mask = mask[:, :, :real.shape[2], :real.shape[3]]
-                ref = imresize(ref, real.shape[3] / ref.shape[3], opt)
+                ref = imresize_to_shape(ref, [real.shape[2], real.shape[3]], opt)
                 ref = ref[:, :, :real.shape[2], :real.shape[3]]
             mask = functions.dilate_mask(mask, opt)
 
