@@ -1,5 +1,6 @@
 import numpy as np
 from scipy.ndimage import filters, measurements, interpolation
+from skimage import color
 from math import pi
 #from SinGAN.functions import torch2uint8, np2torch
 import torch
