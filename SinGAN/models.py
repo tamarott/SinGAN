@@ -13,9 +13,9 @@ class ConvBlock(nn.Sequential):
 
 def weights_init(m):
     classname = m.__class__.__name__
-    if classname.find('conv') != -1:
+    if classname.find('Conv2d') != -1:
         m.weight.data.normal_(0.0, 0.02)
-    elif classname.find('norm') != -1:
+    elif classname.find('Norm') != -1:
         m.weight.data.normal_(1.0, 0.02)
         m.bias.data.fill_(0)
    
