@@ -24,6 +24,8 @@ This is done by injecting an image to the already trained model. See section 4 i
 python -m pip install -r requirements.txt
 ```
 
+This code was tested with python 3.6  
+
 ###  Train
 To train SinGAN model on your own image, put the desire training image under Input/Images, and run
 
