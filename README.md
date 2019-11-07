@@ -104,6 +104,13 @@ This will automatically train a SinGAN model correspond to 4x upsampling factor 
 For different SR factors, please specify it using the parametr 'sr_factor' when calling the function.
 SinGAN's results on BSD100 dataset can be download from the 'Downloads' folder.
 
+### User Study
+User study images can be found in the 'Downloads' folder. 
+'real' folder: 50 real images, randomly picked from the [places databas](http://places.csail.mit.edu/)
+'fake_high_variance' folder: random samples starting from n=N for each of the real images 
+'fake_mid_variance' folder: random samples starting from n=N-1 for each of the real images 
+For additional details please see section 3.1 in our [paper](https://arxiv.org/pdf/1905.01164.pdf))
+
 ### Citation
 If you use this code for your research, please cite our paper:
 
