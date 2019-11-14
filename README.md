@@ -16,6 +16,18 @@ SinGAN can be also use to a line of image manipulation task, for example:
 This is done by injecting an image to the already trained model. See section 4 in our [paper](https://arxiv.org/pdf/1905.01164.pdf) for more details.
 
 
+## Citation
+If you use this code for your research, please cite our paper:
+
+```
+@inproceedings{shaham2019singan,
+  title={SinGAN: Learning a Generative Model from a Single Natural Image},
+  author={Rott Shaham, Tamar and Dekel, Tali and Michaeli, Tomer},
+  booktitle={Computer Vision (ICCV), IEEE International Conference on},
+  year={2019}
+}
+```
+
 ## Code
 
 ### Install dependencies
@@ -104,6 +116,11 @@ This will automatically train a SinGAN model correspond to 4x upsampling factor 
 For different SR factors, please specify it using the parametr 'sr_factor' when calling the function.
 SinGAN's results on BSD100 dataset can be download from the 'Downloads' folder.
 
+## Downloads
+
+### Super Resolution Results
+SinGAN's SR results on BSD100 dataset can be download from the 'Downloads' folder.
+
 ### User Study
 The data used for the user study can be found in the 'Downloads' folder. 
 
@@ -115,15 +132,4 @@ The data used for the user study can be found in the 'Downloads' folder.
 
 For additional details please see section 3.1 in our [paper](https://arxiv.org/pdf/1905.01164.pdf))
 
-### Citation
-If you use this code for your research, please cite our paper:
-
-```
-@inproceedings{shaham2019singan,
-  title={SinGAN: Learning a Generative Model from a Single Natural Image},
-  author={Rott Shaham, Tamar and Dekel, Tali and Michaeli, Tomer},
-  booktitle={Computer Vision (ICCV), IEEE International Conference on},
-  year={2019}
-}
-```
 
