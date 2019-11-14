@@ -20,7 +20,7 @@ This is done by injecting an image to the already trained model. See section 4 i
 If you use this code for your research, please cite our paper:
 
 ```
-@inproceedings{shaham2019singan,
+@inproceedings{rottshaham2019singan,
   title={SinGAN: Learning a Generative Model from a Single Natural Image},
   author={Rott Shaham, Tamar and Dekel, Tali and Michaeli, Tomer},
   booktitle={Computer Vision (ICCV), IEEE International Conference on},
