@@ -96,7 +96,7 @@ Here as well, different injection scale will produce different editing effects. 
 Advanced option: Specify quantization_flag to be True, to re-train *only* the injection level of the model, to get a on a color-quantized version of upsamled generated images from previous scale. For some images, this might lead to more realistic results.
 
 ### Super Resolution
-To super resolve an image, Please run:
+To super resolve an image, please run:
 ```
 python3 SR.py --input_name <LR_image_file_name>
 ```
@@ -105,10 +105,14 @@ For different SR factors, please specify it using the parametr 'sr_factor' when 
 SinGAN's results on BSD100 dataset can be download from the 'Downloads' folder.
 
 ### User Study
-User study images can be found in the 'Downloads' folder. 
+The data used for the user study can be found in the 'Downloads' folder. 
+
 'real' folder: 50 real images, randomly picked from the [places databas](http://places.csail.mit.edu/)
+
 'fake_high_variance' folder: random samples starting from n=N for each of the real images 
+
 'fake_mid_variance' folder: random samples starting from n=N-1 for each of the real images 
+
 For additional details please see section 3.1 in our [paper](https://arxiv.org/pdf/1905.01164.pdf))
 
 ### Citation
