@@ -110,13 +110,20 @@ Advanced option: Specify quantization_flag to be True, to re-train *only* the in
 ### Super Resolution
 To super resolve an image, please run:
 ```
-python3 SR.py --input_name <LR_image_file_name>
+python SR.py --input_name <LR_image_file_name>
 ```
 This will automatically train a SinGAN model correspond to 4x upsampling factor (if not exist already).
 For different SR factors, please specify it using the parametr 'sr_factor' when calling the function.
 SinGAN's results on BSD100 dataset can be download from the 'Downloads' folder.
 
-## Downloads
+## Additional Data and Functions
+
+### Single Image Fréchet Inception Distance (SIFID score)
+To calculate the SIFID between real images and their corresponding fake samples, please run:
+```
+python SIFID/sifid_score.py --path2real <real images path> --path2fake <fake images path> --images_suffix <e.g. jpg, png>
+```  
+Make sure that each of the fake images file name is identical to its cooresponding real image file name. 
 
 ### Super Resolution Results
 SinGAN's SR results on BSD100 dataset can be download from the 'Downloads' folder.
