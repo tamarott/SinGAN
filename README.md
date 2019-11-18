@@ -47,6 +47,8 @@ python main_train.py --input_name <input_file_name>
 
 This will also use the resulting trained model to generate random samples starting from the coarsest scale (n=0).
 
+To run this code on a cpu machine, specify --no_cuda when calling the main_train.py
+
 ###  Random samples
 To generate random samples from any starting generation scale, please first train SinGAN model for the desire image (as described above), then run 
 
