@@ -5,7 +5,7 @@ def get_arguments():
     parser = argparse.ArgumentParser()
     #parser.add_argument('--mode', help='task to be done', default='train')
     #workspace:
-    parser.add_argument('--cuda', action='store_true', help='enables cuda', default=1)
+    parser.add_argument('--not_cuda', action='store_true', help='enables cuda', default=0)
     
     #load, input, save configurations:
     parser.add_argument('--netG', default='', help="path to netG (to continue training)")
