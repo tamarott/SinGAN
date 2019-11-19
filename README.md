@@ -139,6 +139,6 @@ The data used for the user study can be found in the 'Downloads' folder.
 
 'fake_mid_variance' folder: random samples starting from n=N-1 for each of the real images 
 
-For additional details please see section 3.1 in our [paper](https://arxiv.org/pdf/1905.01164.pdf))
+For additional details please see section 3.1 in our [paper](https://arxiv.org/pdf/1905.01164.pdf)
 
 
