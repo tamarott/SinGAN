@@ -6,6 +6,7 @@ def get_arguments():
     #parser.add_argument('--mode', help='task to be done', default='train')
     #workspace:
     parser.add_argument('--not_cuda', action='store_true', help='disables cuda', default=0)
+    parser.add_argument('--cuda_id', help='the cuda id of the GPU to train on',default='0')
     
     #load, input, save configurations:
     parser.add_argument('--netG', default='', help="path to netG (to continue training)")
