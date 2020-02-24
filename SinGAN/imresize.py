@@ -1,3 +1,5 @@
+# This code was taken from: https://github.com/assafshocher/resizer by Assaf Shocher
+
 import numpy as np
 from scipy.ndimage import filters, measurements, interpolation
 from skimage import color
