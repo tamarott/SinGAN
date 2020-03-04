@@ -11,6 +11,9 @@ from SinGAN.imresize import imresize
 def train(opt,Gs,Zs,reals,NoiseAmp,scale_num=0):
     real_ = functions.read_image(opt)
     in_s = 0
+    if scale_num > 0:
+        # EXPERIMENTAL: if we are in 'continue' mode
+        in_s = torch.full(reals[0].shape, 0, device=opt.device)
     real = imresize(real_,opt.scale1,opt)
     reals = functions.creat_reals_pyramid(real,reals,opt)
     nfc_prev = 0
