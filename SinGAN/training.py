@@ -8,10 +8,9 @@ import math
 import matplotlib.pyplot as plt
 from SinGAN.imresize import imresize
 
-def train(opt,Gs,Zs,reals,NoiseAmp):
+def train(opt,Gs,Zs,reals,NoiseAmp,scale_num=0):
     real_ = functions.read_image(opt)
     in_s = 0
-    scale_num = 0
     real = imresize(real_,opt.scale1,opt)
     reals = functions.creat_reals_pyramid(real,reals,opt)
     nfc_prev = 0
