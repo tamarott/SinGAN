@@ -102,7 +102,7 @@ def train_single_scale(netD,netG,reals,Gs,Zs,in_s,NoiseAmp,opt,centers=None):
     saved_epoch = -1
     try:
         with open('%s/epoch' % opt.outf, 'r') as f:
-            saved_epoch = int(f.readline(limit=1))
+            saved_epoch = int(f.readline())
     except OSError:
         pass
     for epoch in range(saved_epoch + 1, opt.niter):
