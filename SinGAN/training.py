@@ -84,7 +84,7 @@ def train_single_scale(netD,netG,reals,Gs,Zs,in_s,NoiseAmp,opt,centers=None):
 
     try:
         z_opt = torch.load('%s/z_opt.pth' % (opt.outf))
-    except IOError | OSError:
+    except OSError:
         pass
 
     # setup optimizer
@@ -103,7 +103,7 @@ def train_single_scale(netD,netG,reals,Gs,Zs,in_s,NoiseAmp,opt,centers=None):
     try:
         with open('%s/epoch' % opt.outf, 'r') as f:
             saved_epoch = int(f.readline(limit=1))
-    except IOError | OSError:
+    except OSError:
         pass
     for epoch in range(saved_epoch + 1, opt.niter):
         if (Gs == []) & (opt.mode != 'SR_train'):
@@ -215,7 +215,7 @@ def train_single_scale(netD,netG,reals,Gs,Zs,in_s,NoiseAmp,opt,centers=None):
             try:
                 with open('%s/epoch' % opt.outf, 'w') as f:
                     f.write(str(epoch))
-            except IOError | OSError:
+            except OSError:
                 pass
 
         if epoch % 500 == 0 or epoch == (opt.niter-1):
