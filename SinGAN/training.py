@@ -27,6 +27,7 @@ def train(opt,Gs,Zs,reals,NoiseAmp,scale_num=0):
         try:
             os.makedirs(opt.outf)
         except OSError:
+                print('directory %s already exists' % opt.outf)
                 pass
 
         #plt.imsave('%s/in.png' %  (opt.out_), functions.convert_image_np(real), vmin=0, vmax=1)
@@ -77,10 +78,14 @@ def train_single_scale(netD,netG,reals,Gs,Zs,in_s,NoiseAmp,opt,centers=None):
     m_image = nn.ZeroPad2d(int(pad_image))
 
     alpha = opt.alpha
-
     fixed_noise = functions.generate_noise([opt.nc_z,opt.nzx,opt.nzy],device=opt.device)
     z_opt = torch.full(fixed_noise.shape, 0, device=opt.device)
     z_opt = m_noise(z_opt)
+
+    try:
+        z_opt = torch.load('%s/z_opt.pth' % (opt.outf))
+    except IOError | OSError:
+        pass
 
     # setup optimizer
     optimizerD = optim.Adam(netD.parameters(), lr=opt.lr_d, betas=(opt.beta1, 0.999))
@@ -94,7 +99,13 @@ def train_single_scale(netD,netG,reals,Gs,Zs,in_s,NoiseAmp,opt,centers=None):
     D_fake2plot = []
     z_opt2plot = []
 
-    for epoch in range(opt.niter):
+    saved_epoch = -1
+    try:
+        with open('%s/epoch' % opt.outf, 'r') as f:
+            saved_epoch = int(f.readline(limit=1))
+    except IOError | OSError:
+        pass
+    for epoch in range(saved_epoch + 1, opt.niter):
         if (Gs == []) & (opt.mode != 'SR_train'):
             z_opt = functions.generate_noise([1,opt.nzx,opt.nzy], device=opt.device)
             z_opt = m_noise(z_opt.expand(1,3,opt.nzx,opt.nzy))
@@ -200,6 +211,12 @@ def train_single_scale(netD,netG,reals,Gs,Zs,in_s,NoiseAmp,opt,centers=None):
 
         if epoch % 25 == 0 or epoch == (opt.niter-1):
             print('scale %d:[%d/%d]' % (len(Gs), epoch, opt.niter))
+            functions.save_networks(netG,netD,z_opt,opt)
+            try:
+                with open('%s/epoch' % opt.outf, 'w') as f:
+                    f.write(str(epoch))
+            except IOError | OSError:
+                pass
 
         if epoch % 500 == 0 or epoch == (opt.niter-1):
             plt.imsave('%s/fake_sample.png' %  (opt.outf), functions.convert_image_np(fake.detach()), vmin=0, vmax=1)
@@ -212,13 +229,11 @@ def train_single_scale(netD,netG,reals,Gs,Zs,in_s,NoiseAmp,opt,centers=None):
             #plt.imsave('%s/z_prev.png'   % (opt.outf), functions.convert_image_np(z_prev), vmin=0, vmax=1)
 
 
-            torch.save(z_opt, '%s/z_opt.pth' % (opt.outf))
 
         schedulerD.step()
         schedulerG.step()
 
-    functions.save_networks(netG,netD,z_opt,opt)
-    return z_opt,in_s,netG    
+    return z_opt,in_s,netG
 
 def draw_concat(Gs,Zs,reals,NoiseAmp,in_s,mode,m_noise,m_image,opt):
     G_z = in_s

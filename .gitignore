@@ -6,3 +6,4 @@ __pycache__/
 *.ipr
 *.iws
 *.iml
+.DS_Store/
