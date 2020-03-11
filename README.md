@@ -125,8 +125,8 @@ To calculate the SIFID between real images and their corresponding fake samples,
 ```
 python SIFID/sifid_score.py --path2real <real images path> --path2fake <fake images path> 
 ```  
-Make sure that each of the fake images file name is identical to its cooresponding real image file name. 
-Images should be save in `.jpg` format
+Make sure that each of the fake images file name is identical to its cooresponding real image file name. Images should be saved in `.jpg` format.
+
 ### Super Resolution Results
 SinGAN's SR results on BSD100 dataset can be download from the 'Downloads' folder.
 
