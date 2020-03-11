@@ -48,7 +48,7 @@ parser = ArgumentParser(formatter_class=ArgumentDefaultsHelpFormatter)
 parser.add_argument('--path2real', type=str, help=('Path to the real images'))
 parser.add_argument('--path2fake', type=str, help=('Path to generated images'))
 parser.add_argument('-c', '--gpu', default='', type=str, help='GPU to use (leave blank for CPU only)')
-parser.add_argument('--images_suffix', default='png', type=str, help='image file suffix')
+parser.add_argument('--images_suffix', default='jpg', type=str, help='image file suffix')
 
 
 def get_activations(files, model, batch_size=1, dims=64,
