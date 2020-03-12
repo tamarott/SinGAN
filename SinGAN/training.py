@@ -9,6 +9,8 @@ import matplotlib.pyplot as plt
 from SinGAN.imresize import imresize
 
 def train(opt,Gs,Zs,reals,NoiseAmp,scale_num=0):
+    print('train() current parameters')
+    print(opt)
     real_ = functions.read_image(opt)
     in_s = 0
     if scale_num > 0:
@@ -63,7 +65,8 @@ def train(opt,Gs,Zs,reals,NoiseAmp,scale_num=0):
 
 
 def train_single_scale(netD,netG,reals,Gs,Zs,in_s,NoiseAmp,opt,centers=None):
-
+    print('train_single_scale() current parameters')
+    print(opt)
     real = reals[len(Gs)]
     opt.nzx = real.shape[2]#+(opt.ker_size-1)*(opt.num_layer)
     opt.nzy = real.shape[3]#+(opt.ker_size-1)*(opt.num_layer)
@@ -213,6 +216,7 @@ def train_single_scale(netD,netG,reals,Gs,Zs,in_s,NoiseAmp,opt,centers=None):
 
         if epoch % 25 == 0 or epoch == (opt.niter-1):
             print('scale %d:[%d/%d]' % (len(Gs), epoch, opt.niter))
+            print(opt)
             functions.save_networks(netG,netD,z_opt,opt)
             try:
                 with open('%s/epoch' % opt.outf, 'w') as f:
