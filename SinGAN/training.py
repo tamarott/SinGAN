@@ -17,8 +17,10 @@ def train(opt, Gs, Zs, reals, NoiseAmp):
     if opt.scale_num > 0:
         # EXPERIMENTAL: if we are in 'continue' mode
         in_s = torch.full(reals[0].shape, 0, device=opt.device)
-    real = imresize(real_,opt.scale1,opt)
-    reals = functions.creat_reals_pyramid(real,reals,opt)
+    real = imresize(real_, opt.scale1, opt)
+    reals = functions.create_reals_pyramid(real, reals, opt)
+    if 'nfc_prev' not in opt:
+        opt.nfc_prev = 0
 
     while opt.scale_num < opt.stop_scale+1:
         opt.nfc = min(opt.nfc_init * pow(2, math.floor(opt.scale_num / 4)), 128)
@@ -37,15 +39,11 @@ def train(opt, Gs, Zs, reals, NoiseAmp):
         plt.imsave('%s/real_scale.png' % opt.outf, functions.convert_image_np(reals[opt.scale_num]), vmin=0, vmax=1)
 
         D_curr, G_curr = init_models(opt)
-        try:
+        if opt.nfc_prev == opt.nfc:
             G_curr.load_state_dict(torch.load('%s/%d/netG.pth' % (opt.out_, opt.scale_num-1)))
             D_curr.load_state_dict(torch.load('%s/%d/netD.pth' % (opt.out_, opt.scale_num-1)))
-        except OSError:
-            print('netG/netD were not loaded')
-            pass
 
-        z_curr, in_s, G_curr = train_single_scale(D_curr, G_curr, reals, Gs, Zs,
-                                                  in_s, NoiseAmp, opt)
+        z_curr, in_s, G_curr = train_single_scale(D_curr, G_curr, reals, Gs, Zs, in_s, NoiseAmp, opt)
 
         G_curr = functions.reset_grads(G_curr, False)
         G_curr.eval()
@@ -62,12 +60,12 @@ def train(opt, Gs, Zs, reals, NoiseAmp):
         torch.save(NoiseAmp, '%s/NoiseAmp.pth' % opt.out_)
 
         opt.scale_num += 1
+        opt.nfc_prev = opt.nfc
         del D_curr, G_curr
     return
 
 
-
-def train_single_scale(netD,netG,reals,Gs,Zs,in_s,NoiseAmp,opt,centers=None):
+def train_single_scale(netD, netG, reals, Gs, Zs, in_s, NoiseAmp, opt, centers=None):
     print('train_single_scale() current parameters')
     print(opt)
     real = reals[len(Gs)]
@@ -77,8 +75,8 @@ def train_single_scale(netD,netG,reals,Gs,Zs,in_s,NoiseAmp,opt,centers=None):
     pad_noise = int(((opt.ker_size - 1) * opt.num_layer) / 2)
     pad_image = int(((opt.ker_size - 1) * opt.num_layer) / 2)
     if opt.mode == 'animation_train':
-        opt.nzx = real.shape[2]+(opt.ker_size-1)*(opt.num_layer)
-        opt.nzy = real.shape[3]+(opt.ker_size-1)*(opt.num_layer)
+        opt.nzx = real.shape[2]+(opt.ker_size-1)*opt.num_layer
+        opt.nzy = real.shape[3]+(opt.ker_size-1)*opt.num_layer
         pad_noise = 0
     m_noise = nn.ZeroPad2d(int(pad_noise))
     m_image = nn.ZeroPad2d(int(pad_image))
@@ -96,8 +94,8 @@ def train_single_scale(netD,netG,reals,Gs,Zs,in_s,NoiseAmp,opt,centers=None):
     # setup optimizer
     optimizerD = optim.Adam(netD.parameters(), lr=opt.lr_d, betas=(opt.beta1, 0.999))
     optimizerG = optim.Adam(netG.parameters(), lr=opt.lr_g, betas=(opt.beta1, 0.999))
-    schedulerD = torch.optim.lr_scheduler.MultiStepLR(optimizer=optimizerD,milestones=[1600],gamma=opt.gamma)
-    schedulerG = torch.optim.lr_scheduler.MultiStepLR(optimizer=optimizerG,milestones=[1600],gamma=opt.gamma)
+    schedulerD = torch.optim.lr_scheduler.MultiStepLR(optimizer=optimizerD, milestones=[1600], gamma=opt.gamma)
+    schedulerG = torch.optim.lr_scheduler.MultiStepLR(optimizer=optimizerG, milestones=[1600], gamma=opt.gamma)
 
     errD2plot = []
     errG2plot = []
