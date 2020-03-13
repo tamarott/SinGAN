@@ -34,8 +34,9 @@ if __name__ == '__main__':
     reals = []
     NoiseAmp = []
     dir2save = functions.generate_dir2save(opt)
-
+    print(dir2save)
     if os.path.exists(dir2save):
+        print('Dir exists')
         Gs, Zs, reals, NoiseAmp = functions.load_trained_pyramid(opt)
     else:
         try:
@@ -44,5 +45,5 @@ if __name__ == '__main__':
             pass
     real = functions.read_image(opt)
     functions.adjust_scales2image(real, opt)
-    train(opt, Gs, Zs, reals, NoiseAmp, opt.scale_num)
+    train(opt, Gs, Zs, reals, NoiseAmp)
     SinGAN_generate(Gs, Zs, reals, NoiseAmp, opt)
