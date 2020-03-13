@@ -12,7 +12,7 @@ def read_options():
         opt1 = sh['opt']
         sh.close()
     except KeyError:
-        print('Serialized options file not found or it empty')
+        print('Serialized options file not found or is empty')
         pass
     return opt1
 
@@ -23,8 +23,11 @@ if __name__ == '__main__':
                         default='Input/Images')
     parser.add_argument('--input_name', help='input image name', required=True)
     parser.add_argument('--mode', help='task to be done', default='train')
+    parser.add_argument('--scale_num',
+                        help='Current scale',
+                        type=int, default=0)
 
-    opt = read_options()
+opt = read_options()
 
     Gs = []
     Zs = []
