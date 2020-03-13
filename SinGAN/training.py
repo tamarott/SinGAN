@@ -13,14 +13,14 @@ def train(opt,Gs,Zs,reals,NoiseAmp,scale_num=0):
     print(opt)
     real_ = functions.read_image(opt)
     in_s = 0
-    if scale_num > 0:
+    if opt.scale_num > 0:
         # EXPERIMENTAL: if we are in 'continue' mode
         in_s = torch.full(reals[0].shape, 0, device=opt.device)
     real = imresize(real_,opt.scale1,opt)
     reals = functions.creat_reals_pyramid(real,reals,opt)
     nfc_prev = 0
 
-    while scale_num<opt.stop_scale+1:
+    while opt.scale_num < opt.stop_scale+1:
         opt.nfc = min(opt.nfc_init * pow(2, math.floor(scale_num / 4)), 128)
         opt.min_nfc = min(opt.min_nfc_init * pow(2, math.floor(scale_num / 4)), 128)
 
@@ -57,7 +57,7 @@ def train(opt,Gs,Zs,reals,NoiseAmp,scale_num=0):
         torch.save(reals, '%s/reals.pth' % (opt.out_))
         torch.save(NoiseAmp, '%s/NoiseAmp.pth' % (opt.out_))
 
-        scale_num+=1
+        opt.scale_num += 1
         nfc_prev = opt.nfc
         del D_curr,G_curr
     return
@@ -106,6 +106,7 @@ def train_single_scale(netD,netG,reals,Gs,Zs,in_s,NoiseAmp,opt,centers=None):
     try:
         with open('%s/epoch' % opt.outf, 'r') as f:
             saved_epoch = int(f.readline())
+            print("continuing from epoch %s..." % saved_epoch)
     except OSError:
         pass
     for epoch in range(saved_epoch + 1, opt.niter):

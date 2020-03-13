@@ -7,11 +7,10 @@ import scipy.io as sio
 import math
 from skimage import io as img
 from skimage import color, morphology, filters
-#from skimage import morphology
-#from skimage import filters
 from SinGAN.imresize import imresize
 import os
 import random
+import shelve
 from sklearn.cluster import KMeans
 
 
@@ -187,10 +186,13 @@ def read_image2np(opt):
     x = x[:, :, 0:3]
     return x
 
-def save_networks(netG,netD,z,opt):
+def save_networks(netG,netD,z_opt,opt):
     torch.save(netG.state_dict(), '%s/netG.pth' % (opt.outf))
     torch.save(netD.state_dict(), '%s/netD.pth' % (opt.outf))
-    torch.save(z, '%s/z_opt.pth' % (opt.outf))
+    torch.save(z_opt, '%s/z_opt.pth' % (opt.outf))
+    sh = shelve.open('opt')
+    sh['opt'] = opt
+    sh.close()
 
 def adjust_scales2image(real_,opt):
     #opt.num_scales = int((math.log(math.pow(opt.min_size / (real_.shape[2]), 1), opt.scale_factor_init))) + 1
