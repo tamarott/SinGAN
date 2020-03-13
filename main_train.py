@@ -27,7 +27,7 @@ if __name__ == '__main__':
                         help='Current scale',
                         type=int, default=0)
 
-opt = read_options()
+    opt = read_options()
 
     Gs = []
     Zs = []
