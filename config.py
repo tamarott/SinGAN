@@ -27,7 +27,7 @@ def get_arguments():
     parser.add_argument('--scale_factor',type=float,help='pyramid scale factor',default=0.75)#pow(0.5,1/6))
     parser.add_argument('--noise_amp',type=float,help='addative noise cont weight',default=0.1)
     parser.add_argument('--min_size',type=int,help='image minimal size at the coarser scale',default=25)
-    parser.add_argument('--max_size', type=int,help='image minimal size at the coarser scale', default=250)
+    parser.add_argument('--max_size', type=int,help='image maximal size at the coarser scale', default=250)
 
     #optimization hyper parameters:
     parser.add_argument('--niter', type=int, default=2000, help='number of epochs to train per scale')
