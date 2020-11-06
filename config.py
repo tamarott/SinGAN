@@ -35,8 +35,7 @@ def get_arguments():
     parser.add_argument('--lr_g', type=float, default=0.0005, help='learning rate, default=0.0005')
     parser.add_argument('--lr_d', type=float, default=0.0005, help='learning rate, default=0.0005')
     parser.add_argument('--beta1', type=float, default=0.5, help='beta1 for adam. default=0.5')
-    parser.add_argument('--Gsteps',type=int, help='Generator inner steps',default=3)
-    parser.add_argument('--Dsteps',type=int, help='Discriminator inner steps',default=3)
+    parser.add_argument('--steps',type=int, help='Generator / Discriminator inner steps',default=3)
     parser.add_argument('--lambda_grad',type=float, help='gradient penelty weight',default=0.1)
     parser.add_argument('--alpha',type=float, help='reconstruction loss weight',default=10)
 
