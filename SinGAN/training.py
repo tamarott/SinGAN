@@ -77,7 +77,7 @@ def train_single_scale(netD,netG,reals,Gs,Zs,in_s,NoiseAmp,opt,centers=None):
     alpha = opt.alpha
 
     fixed_noise = functions.generate_noise([opt.nc_z,opt.nzx,opt.nzy],device=opt.device)
-    z_opt = torch.full(fixed_noise.shape, 0, device=opt.device)
+    z_opt = torch.full(fixed_noise.shape, 0, dtype=torch.float32, device=opt.device)
     z_opt = m_noise(z_opt)
 
     # setup optimizer
@@ -105,7 +105,7 @@ def train_single_scale(netD,netG,reals,Gs,Zs,in_s,NoiseAmp,opt,centers=None):
         ############################
         # (1) Update D network: maximize D(x) + D(G(z))
         ###########################
-        for j in range(opt.Dsteps):
+        for j in range(opt.steps):
             # train with real
             netD.zero_grad()
 
@@ -118,10 +118,10 @@ def train_single_scale(netD,netG,reals,Gs,Zs,in_s,NoiseAmp,opt,centers=None):
             # train with fake
             if (j==0) & (epoch == 0):
                 if (Gs == []) & (opt.mode != 'SR_train'):
-                    prev = torch.full([1,opt.nc_z,opt.nzx,opt.nzy], 0, device=opt.device)
+                    prev = torch.full([1,opt.nc_z,opt.nzx,opt.nzy], 0, dtype=torch.float32, device=opt.device)
                     in_s = prev
                     prev = m_image(prev)
-                    z_prev = torch.full([1,opt.nc_z,opt.nzx,opt.nzy], 0, device=opt.device)
+                    z_prev = torch.full([1,opt.nc_z,opt.nzx,opt.nzy], 0, dtype=torch.float32, device=opt.device)
                     z_prev = m_noise(z_prev)
                     opt.noise_amp = 1
                 elif opt.mode == 'SR_train':
@@ -164,13 +164,13 @@ def train_single_scale(netD,netG,reals,Gs,Zs,in_s,NoiseAmp,opt,centers=None):
             errD = errD_real + errD_fake + gradient_penalty
             optimizerD.step()
 
-        errD2plot.append(errD.detach())
+
 
         ############################
         # (2) Update G network: maximize D(G(z))
         ###########################
 
-        for j in range(opt.Gsteps):
+
             netG.zero_grad()
             output = netD(fake)
             #D_fake_map = output.detach()
@@ -190,7 +190,8 @@ def train_single_scale(netD,netG,reals,Gs,Zs,in_s,NoiseAmp,opt,centers=None):
                 rec_loss = 0
 
             optimizerG.step()
-
+            
+        errD2plot.append(errD.detach())
         errG2plot.append(errG.detach()+rec_loss)
         D_real2plot.append(D_x)
         D_fake2plot.append(D_G_z)
@@ -255,7 +256,7 @@ def draw_concat(Gs,Zs,reals,NoiseAmp,in_s,mode,m_noise,m_image,opt):
     return G_z
 
 def train_paint(opt,Gs,Zs,reals,NoiseAmp,centers,paint_inject_scale):
-    in_s = torch.full(reals[0].shape, 0, device=opt.device)
+    in_s = torch.full(reals[0].shape, 0, dtype=torch.float32, device=opt.device)
     scale_num = 0
     nfc_prev = 0
 
