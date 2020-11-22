@@ -42,8 +42,12 @@ This code was tested with python 3.6
 To train SinGAN model on your own image, put the desire training image under Input/Images, and run
 
 ```
-python main_train.py --input_name <input_file_name>
-```
+###  For running with sounds run with either 0 for Applause or 1 for Waves. Should return correct input_name for main_train.py
+python main_train.py --ifSound True --noSound 1 --not_Cuda
+
+### For running with pictures
+python main_train.py --ifSound False --input_name <input_file_name>
+``` 
 
 This will also use the resulting trained model to generate random samples starting from the coarsest scale (n=0).
 
