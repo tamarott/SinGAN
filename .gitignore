@@ -1,5 +1,5 @@
 # Don't track content of these folders
-Output/
-TrainedModels/
+# Output/
+# TrainedModels/
 __pycache__/
 .idea
