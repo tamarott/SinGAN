@@ -382,8 +382,9 @@ def create_Spect(fileno):
 
 
     # Returns a time series, sr is sample rate (how many samples per sec). 
-    # Explanation: Typically an audio signal, denoted by y, and represented as a one-dimensional numpy.ndarray of floating-point values. y[t] corresponds to the amplitude of the waveform at sample t. 
-
+    # Explanation: Typically an audio signal, denoted by y, and represented 
+    # as a one-dimensional numpy.ndarray of floating-point values. y[t] corresponds 
+    # to the amplitude of the waveform at sample t. 
 
     x, sr = librosa.load(audio_fpath+audio_clips[noSound], sr=44100)
 
@@ -409,17 +410,20 @@ def create_Spect(fileno):
     # created from waveform
     # liniar scale - is it an array of complex no? 
     # stft contains both phase and magnitude 
-    # what is x in librosa library. Extract every magnitude and phase of each complex no. 
+    # what is (big) X in librosa library. Extract every magnitude and phase of each complex no. 
     X = librosa.stft(x)
-    # decible scale 
-    Xdb = librosa.amplitude_to_db(abs(X))
+    # decible scale.
+    # Currently only extracting magnitude (which is abs) 
+    # Make similar array only containing the phase 
+    # Xdb = librosa.amplitude_to_db(abs(X))
+    magnitude, phase = librosa.magphase(X)
 
     # find a way to convert db scale to picture. Red magnitude on DB-scale, Blue is the phase 
 
 
     # creates new figure for spectrogram from the stft matrix
     plt.figure(figsize=(14, 5))
-    librosa.display.specshow(Xdb, sr=sr)
+    librosa.display.specshow(magnitude, phase, sr=sr)
     # librosa.display.specshow(Xdb, sr=sr, x_axis='time', y_axis='hz')
     # plt.colorbar()
     plt.savefig('/Users/cecilieneckelmann/Documents/ResearchProject/SinGan/Input/Images/{0}.png'.format(nameOfSound), bbox_inches='tight')
