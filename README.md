@@ -43,7 +43,7 @@ To train SinGAN model on your own image, put the desire training image under Inp
 
 ```
 ###  For running with sounds run with either 0 for Applause or 1 for Waves. Should return correct input_name for main_train.py
-python main_train.py --ifSound True --noSound 1 --not_Cuda
+python main_train.py --ifSound True --noSound 1 --not_cuda
 
 ### For running with pictures
 python main_train.py --ifSound False --input_name <input_file_name>

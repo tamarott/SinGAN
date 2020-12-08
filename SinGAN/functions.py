@@ -360,14 +360,13 @@ def dilate_mask(mask,opt):
 
 def create_Spect(fileno):   
     # Finding the desired audio file
-    # audio_fpath = "../Input/Sounds/"
-    audio_fpath = "/Users/cecilieneckelmann/Documents/ResearchProject/SinGan/Input/Sounds/"
+    audio_fpath = "Input/Sounds/"
     audio_clips = os.listdir(audio_fpath)
-    print("No. of .wav files in audio folder = ",len(audio_clips))
+    #print("No. of .wav files in audio folder = ",len(audio_clips))
 
     wavDict = {}
     counter = 0
-    print('Names')
+    #print('Names')
     for name in audio_clips:
         shortname = name.split('.')
         wavDict[counter] = shortname[0]
@@ -380,30 +379,32 @@ def create_Spect(fileno):
     noSound = fileno
     nameOfSound = wavDict[noSound]
 
+    # librosa.load returns two things: a time series/array of amplitudes x 
+    # and sample rate sr (number of samples of audio carried per second). 
+    # Explanation: Typically an audio signal, denoted by y (x is this case?), 
+    # and represented as a one-dimensional numpy.ndarray of floating-point values. 
+    # y[t] corresponds to the amplitude of the waveform at sample t. 
+    x, sr = librosa.load(audio_fpath+audio_clips[noSound], sr=None) #setting with original sr. Both have sr = 44.1KHz '= 44100' (but other might not have)
 
-    # Returns a time series, sr is sample rate (how many samples per sec). 
-    # Explanation: Typically an audio signal, denoted by y, and represented 
-    # as a one-dimensional numpy.ndarray of floating-point values. y[t] corresponds 
-    # to the amplitude of the waveform at sample t. 
+    #print(type(x), type(sr))
+    #print(x.shape, sr)
 
-    x, sr = librosa.load(audio_fpath+audio_clips[noSound], sr=44100)
-
-    print(type(x), type(sr))
-    print(x.shape, sr)
+    #duration_of_sound = len(x)/sr
+    #print (duration_of_sound, "seconds")
 
     # Creating a figure-object for waveform
-    plt.figure(figsize=(14, 5))
+    #plt.figure(figsize=(14, 5))
+    #librosa.display.waveplot(x, sr=sr)
+    #plt.xlabel("Time (seconds) -->")
+    #plt.ylabel("Amplitude")
+    #plt.show()
 
+    #print("This is x: ", x)
+    #print("Length: " + str(len(x)))
 
-    librosa.display.waveplot(x, sr=sr)
-
-    print("This is x: ")
-    print(x)
-    print("Length: " + str(len(x)))
-
-    # stft(x): Short-Time Fourier Transform
-    # This function returns a complex-valued matrix D such that 
-
+    # librosa.stft(x): Short-Time Fourier Transform
+    # returns a complex-valued matrix D (of short-term Fourier transform coefficients) 
+    # such that:
     # - np.abs(D[f, t]) is the magnitude of frequency bin f at frame t, and
     # - np.angle(D[f, t]) is the phase of frequency bin f at frame t.
 
@@ -415,22 +416,25 @@ def create_Spect(fileno):
     # decible scale.
     # Currently only extracting magnitude (which is abs) 
     # Make similar array only containing the phase 
-    # Xdb = librosa.amplitude_to_db(abs(X))
-    magnitude, phase = librosa.magphase(X)
+    Xdb = librosa.amplitude_to_db(abs(X))
+    #magnitude, phase = librosa.magphase(X)
 
     # find a way to convert db scale to picture. Red magnitude on DB-scale, Blue is the phase 
 
-
     # creates new figure for spectrogram from the stft matrix
-    plt.figure(figsize=(14, 5))
-    librosa.display.specshow(magnitude, phase, sr=sr)
-    # librosa.display.specshow(Xdb, sr=sr, x_axis='time', y_axis='hz')
+    plt.figure(figsize=(14, 5), frameon=False)
+    #removing axis
+    plt.axis('off')
+
+    #librosa.display.specshow(magnitude, phase, sr=sr)
+    librosa.display.specshow(Xdb, sr=sr)
+    # librosa.display.specshow(Xdb, sr=sr, x_axis='time', y_axis='log') # converting the frequency axis to a logarithmic one.
     # plt.colorbar()
-    plt.savefig('/Users/cecilieneckelmann/Documents/ResearchProject/SinGan/Input/Images/{0}.png'.format(nameOfSound), bbox_inches='tight')
+    plt.tight_layout()
+    plt.savefig('Input/Images/{0}.png'.format(nameOfSound), bbox_inches='tight', pad_inches=0)
     # plt.show()
 
-
-    # recovered_audio_orig = invert_pretty_spectrogram(wav_spectrogram, fft_size = fft_size,
-    #                                             step_size = step_size, log = True, n_iter = 10)
+    # recovered_audio_orig = invert_pretty_spectrogram(wav_spectrogram, fft_size = fft_size, step_size = step_size, log = True, n_iter = 10)
     # IPython.display.Audio(data=recovered_audio_orig, rate=rate)
-    return nameOfSound
+
+    #return nameOfSound
