@@ -374,12 +374,12 @@ def create_Spect(fileno):
 
     # Picking a file to work with:
     if(fileno > len(audio_clips)):
-        return 'Unvalid fileNo'
+        return 'Invalid fileNo'
 
     noSound = fileno
     nameOfSound = wavDict[noSound]
 
-    # librosa.load returns two things: a time series/array of amplitudes x 
+    # librosa.load returns two things: an audio time series as nympy array/array of amplitudes x 
     # and sample rate sr (number of samples of audio carried per second). 
     # Explanation: Typically an audio signal, denoted by y (x is this case?), 
     # and represented as a one-dimensional numpy.ndarray of floating-point values. 
@@ -414,19 +414,20 @@ def create_Spect(fileno):
     # what is (big) X in librosa library. Extract every magnitude and phase of each complex no. 
     X = librosa.stft(x)
     # decible scale.
-    # Currently only extracting magnitude (which is abs) 
+    # Currently only extracting amplitude/magnitude (which we take the absolute value of "abs") 
     # Make similar array only containing the phase 
     Xdb = librosa.amplitude_to_db(abs(X))
     #magnitude, phase = librosa.magphase(X)
 
     # find a way to convert db scale to picture. Red magnitude on DB-scale, Blue is the phase 
 
+    # more help: https://librosa.org/doc/main/auto_examples/plot_display.html
     # creates new figure for spectrogram from the stft matrix
     plt.figure(figsize=(14, 5), frameon=False)
     #removing axis
     plt.axis('off')
 
-    #librosa.display.specshow(magnitude, phase, sr=sr)
+    # librosa.display.specshow(magnitude, phase, sr=sr)
     librosa.display.specshow(Xdb, sr=sr)
     # librosa.display.specshow(Xdb, sr=sr, x_axis='time', y_axis='log') # converting the frequency axis to a logarithmic one.
     # plt.colorbar()
@@ -437,4 +438,4 @@ def create_Spect(fileno):
     # recovered_audio_orig = invert_pretty_spectrogram(wav_spectrogram, fft_size = fft_size, step_size = step_size, log = True, n_iter = 10)
     # IPython.display.Audio(data=recovered_audio_orig, rate=rate)
 
-    #return nameOfSound
+    return nameOfSound
