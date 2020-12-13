@@ -358,33 +358,30 @@ def dilate_mask(mask,opt):
     mask = (mask-mask.min())/(mask.max()-mask.min())
     return mask
 
-def create_Spect(fileno):   
+def create_Spect(filename):   
     # Finding the desired audio file
     audio_fpath = "Input/Sounds/"
     audio_clips = os.listdir(audio_fpath)
     #print("No. of .wav files in audio folder = ",len(audio_clips))
 
-    wavDict = {}
-    counter = 0
-    #print('Names')
+    wavDict = []
     for name in audio_clips:
         shortname = name.split('.')
-        wavDict[counter] = shortname[0]
-        counter += 1
+        wavDict.append(shortname[0])
 
-    # Picking a file to work with:
-    if(fileno > len(audio_clips)):
-        return 'Invalid fileNo'
+    # Checking if filename has corresponding file to work with:
+    if filename not in wavDict:
+        print('No such file in directory')
+        return
 
-    noSound = fileno
-    nameOfSound = wavDict[noSound]
+    audio_file = audio_fpath + filename + ".wav"
 
     # librosa.load returns two things: an audio time series as nympy array/array of amplitudes x 
     # and sample rate sr (number of samples of audio carried per second). 
     # Explanation: Typically an audio signal, denoted by y (x is this case?), 
     # and represented as a one-dimensional numpy.ndarray of floating-point values. 
     # y[t] corresponds to the amplitude of the waveform at sample t. 
-    x, sr = librosa.load(audio_fpath+audio_clips[noSound], sr=None) #setting with original sr. Both have sr = 44.1KHz '= 44100' (but other might not have)
+    x, sr = librosa.load(audio_file, sr=None) #setting with original sr. Both have sr = 44.1KHz '= 44100' (but other might not have)
 
     #print(type(x), type(sr))
     #print(x.shape, sr)
@@ -432,10 +429,8 @@ def create_Spect(fileno):
     # librosa.display.specshow(Xdb, sr=sr, x_axis='time', y_axis='log') # converting the frequency axis to a logarithmic one.
     # plt.colorbar()
     plt.tight_layout()
-    plt.savefig('Input/Images/{0}.png'.format(nameOfSound), bbox_inches='tight', pad_inches=0)
+    plt.savefig('Input/Images/' + filename + '.png', bbox_inches='tight', pad_inches=0)
     # plt.show()
 
     # recovered_audio_orig = invert_pretty_spectrogram(wav_spectrogram, fft_size = fft_size, step_size = step_size, log = True, n_iter = 10)
     # IPython.display.Audio(data=recovered_audio_orig, rate=rate)
-
-    return nameOfSound
