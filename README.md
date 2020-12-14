@@ -1,9 +1,9 @@
 # SoundGAN
 
-[Project](https://github.com/Loller94/SoundGAN) ) 
+[Project](https://github.com/Loller94/SoundGAN) 
 ### Research Project implementation by Jane W. Osbøl & Cecilie C. K. Neckelmann, Software Design 
 
-
+![](imgs/Applause.PNG)
 
 
 ### Citation
