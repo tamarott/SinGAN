@@ -362,75 +362,46 @@ def create_Spect(filename):
     # Finding the desired audio file
     audio_fpath = "Input/Sounds/"
     audio_clips = os.listdir(audio_fpath)
-    #print("No. of .wav files in audio folder = ",len(audio_clips))
 
+
+    # Creates overview of wav files at directory distination
     wavDict = []
     for name in audio_clips:
         shortname = name.split('.')
         wavDict.append(shortname[0])
+
 
     # Checking if filename has corresponding file to work with:
     if filename not in wavDict:
         print('No such file in directory')
         return
 
+
+    # Creates filename
     audio_file = audio_fpath + filename + ".wav"
+
 
     # librosa.load returns two things: an audio time series as nympy array/array of amplitudes x 
     # and sample rate sr (number of samples of audio carried per second). 
-    # Explanation: Typically an audio signal, denoted by y (x is this case?), 
-    # and represented as a one-dimensional numpy.ndarray of floating-point values. 
-    # y[t] corresponds to the amplitude of the waveform at sample t. 
-    x, sr = librosa.load(audio_file, sr=None) #setting with original sr. Both have sr = 44.1KHz '= 44100' (but other might not have)
+    x, sr = librosa.load(audio_file, sr=None)
 
-    #print(type(x), type(sr))
-    #print(x.shape, sr)
-
-    #duration_of_sound = len(x)/sr
-    #print (duration_of_sound, "seconds")
-
-    # Creating a figure-object for waveform
-    #plt.figure(figsize=(14, 5))
-    #librosa.display.waveplot(x, sr=sr)
-    #plt.xlabel("Time (seconds) -->")
-    #plt.ylabel("Amplitude")
-    #plt.show()
-
-    #print("This is x: ", x)
-    #print("Length: " + str(len(x)))
 
     # librosa.stft(x): Short-Time Fourier Transform
     # returns a complex-valued matrix D (of short-term Fourier transform coefficients) 
     # such that:
     # - np.abs(D[f, t]) is the magnitude of frequency bin f at frame t, and
     # - np.angle(D[f, t]) is the phase of frequency bin f at frame t.
-
-    # created from waveform
-    # liniar scale - is it an array of complex no? 
-    # stft contains both phase and magnitude 
-    # what is (big) X in librosa library. Extract every magnitude and phase of each complex no. 
     X = librosa.stft(x)
-    # decible scale.
-    # Currently only extracting amplitude/magnitude (which we take the absolute value of "abs") 
-    # Make similar array only containing the phase 
+
+
+    # Extracting decible scale from stft.
     Xdb = librosa.amplitude_to_db(abs(X))
-    #magnitude, phase = librosa.magphase(X)
 
-    # find a way to convert db scale to picture. Red magnitude on DB-scale, Blue is the phase 
 
-    # more help: https://librosa.org/doc/main/auto_examples/plot_display.html
-    # creates new figure for spectrogram from the stft matrix
+    # Creates spectrogram from the stft matrix without axis information
     plt.figure(figsize=(14, 5), frameon=False)
-    #removing axis
     plt.axis('off')
-
-    # librosa.display.specshow(magnitude, phase, sr=sr)
     librosa.display.specshow(Xdb, sr=sr)
-    # librosa.display.specshow(Xdb, sr=sr, x_axis='time', y_axis='log') # converting the frequency axis to a logarithmic one.
-    # plt.colorbar()
     plt.tight_layout()
     plt.savefig('Input/Images/' + filename + '.png', bbox_inches='tight', pad_inches=0)
-    # plt.show()
-
-    # recovered_audio_orig = invert_pretty_spectrogram(wav_spectrogram, fft_size = fft_size, step_size = step_size, log = True, n_iter = 10)
-    # IPython.display.Audio(data=recovered_audio_orig, rate=rate)
+   
