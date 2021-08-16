@@ -37,7 +37,12 @@ If you use this code for your research, please cite our paper:
 python -m pip install -r requirements.txt
 ```
 
-This code was tested with python 3.6  
+This code was tested with python 3.6, torch 1.4
+
+Please note: the code currently only supports torch 1.4 or earlier because of the optimization scheme.
+
+For later torch versions, you may try this repository: https://github.com/kligvasser/SinGAN (results won't necessarily be identical to the official implementation).
+
 
 ###  Train
 To train SinGAN model on your own image, put the desired training image under Input/Images, and run
