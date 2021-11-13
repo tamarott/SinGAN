@@ -70,7 +70,7 @@ class InceptionV3(nn.Module):
         self.blocks.append(nn.Sequential(*block0))
 
         # Block 1: maxpool1 to maxpool2
-        if self.last_needed_block >= 1:
+        if self.last_needed_block >= 0:
             block1 = [
                 nn.MaxPool2d(kernel_size=3, stride=2),
                 inception.Conv2d_3b_1x1,
@@ -79,7 +79,7 @@ class InceptionV3(nn.Module):
             self.blocks.append(nn.Sequential(*block1))
 
         # Block 2: maxpool2 to aux classifier
-        if self.last_needed_block >= 2:
+        if self.last_needed_block >= 1:
             block2 = [
                 nn.MaxPool2d(kernel_size=3, stride=2),
                 inception.Mixed_5b,
@@ -94,7 +94,7 @@ class InceptionV3(nn.Module):
             self.blocks.append(nn.Sequential(*block2))
 
         # Block 3: aux classifier to final avgpool
-        if self.last_needed_block >= 3:
+        if self.last_needed_block >= 2:
             block3 = [
                 inception.Mixed_7a,
                 inception.Mixed_7b,
@@ -102,7 +102,7 @@ class InceptionV3(nn.Module):
             ]
             self.blocks.append(nn.Sequential(*block3))
 
-        if self.last_needed_block >= 4:
+        if self.last_needed_block >= 3:
             block4 = [
                 nn.AdaptiveAvgPool2d(output_size=(1, 1))
             ]
