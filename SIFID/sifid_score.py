@@ -51,7 +51,7 @@ parser.add_argument('-c', '--gpu', default='', type=str, help='GPU to use (leave
 parser.add_argument('--images_suffix', default='jpg', type=str, help='image file suffix')
 
 
-def get_activations(files, model, batch_size=1, dims=64,
+def get_activations(files, model, batch_size=1, dims=192,
                     cuda=False, verbose=False):
     """Calculates the activations of the pool_3 layer for all images.
 
@@ -183,7 +183,7 @@ def calculate_frechet_distance(mu1, sigma1, mu2, sigma2, eps=1e-6):
 
 
 def calculate_activation_statistics(files, model, batch_size=1,
-                                    dims=64, cuda=False, verbose=False):
+                                    dims=192, cuda=False, verbose=False):
     """Calculation of the statistics used by the FID.
     Params:
     -- files       : List of image files paths
@@ -255,7 +255,7 @@ if __name__ == '__main__':
     path2 = args.path2fake
     suffix = args.images_suffix
 
-    sifid_values = calculate_sifid_given_paths(path1,path2,1,args.gpu!='',64,suffix)
+    sifid_values = calculate_sifid_given_paths(path1,path2,1,args.gpu!='',192,suffix)
 
     sifid_values = np.asarray(sifid_values,dtype=np.float32)
     numpy.save('SIFID', sifid_values)
