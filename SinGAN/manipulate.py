@@ -22,7 +22,9 @@ from config import get_arguments
 
 def generate_gif(Gs,Zs,reals,NoiseAmp,opt,alpha=0.1,beta=0.9,start_scale=2,fps=10):
 
-    in_s = torch.full(Zs[0].shape, 0, device=opt.device)
+    # This next line updated to bring it inline with later versions of pytorch by
+    # Levi Pfantz on 10/20/2020
+    in_s = torch.full(Zs[0].shape, 0, dtype=torch.float32, device=opt.device)
     images_cur = []
     count = 0
 
@@ -86,62 +88,85 @@ def generate_gif(Gs,Zs,reals,NoiseAmp,opt,alpha=0.1,beta=0.9,start_scale=2,fps=1
     imageio.mimsave('%s/start_scale=%d/alpha=%f_beta=%f.gif' % (dir2save,start_scale,alpha,beta),images_cur,fps=fps)
     del images_cur
 
-def SinGAN_generate(Gs,Zs,reals,NoiseAmp,opt,in_s=None,scale_v=1,scale_h=1,n=0,gen_start_scale=0,num_samples=50):
+
+def SinGAN_generate(Gs, Zs, reals, NoiseAmp, opt, in_s=None, scale_v=1, scale_h=1, n=0, gen_start_scale=0, num_samples=50):
     #if torch.is_tensor(in_s) == False:
     if in_s is None:
-        in_s = torch.full(reals[0].shape, 0, device=opt.device)
+        # This next line updated to bring it inline with later versions of pytorch by
+        # Levi Pfantz on 10/20/2020
+        in_s = torch.full(reals[0].shape, 0, dtype=torch.float32, device=opt.device)
     images_cur = []
     for G,Z_opt,noise_amp in zip(Gs,Zs,NoiseAmp):
-        pad1 = ((opt.ker_size-1)*opt.num_layer)/2
-        m = nn.ZeroPad2d(int(pad1))
+        pad1 = int(((opt.ker_size - 1) * opt.num_layer) / 2) * opt.dilation
+
+        if opt.alt_pyramid_exp > 0:
+            level = n
+            calc_ker_size=opt.ker_size_pyr[level]
+            pad1 = int(((opt.ker_size - 1) * opt.num_layer) / 2) * opt.dilation
+
+        # m = nn.ZeroPad2d(int(pad1))
         nzx = (Z_opt.shape[2]-pad1*2)*scale_v
-        nzy = (Z_opt.shape[3]-pad1*2)*scale_h
+        # nzy = (Z_opt.shape[3]-pad1*2)*scale_h
 
         images_prev = images_cur
         images_cur = []
 
+
+
         for i in range(0,num_samples,1):
+
             if n == 0:
-                z_curr = functions.generate_noise([1,nzx,nzy], device=opt.device)
-                z_curr = z_curr.expand(1,3,z_curr.shape[2],z_curr.shape[3])
-                z_curr = m(z_curr)
+                z_curr = functions.generate_noise([1, nzx], device=opt.device)
+                z_curr = z_curr.expand(1, 1, z_curr.shape[2])
+                z_curr = AudioSample.static_pad(z_curr, pad1, opt)
             else:
-                z_curr = functions.generate_noise([opt.nc_z,nzx,nzy], device=opt.device)
-                z_curr = m(z_curr)
+                z_curr = functions.generate_noise([opt.nc_aud, nzx], device=opt.device)
+                z_curr = AudioSample.static_pad(z_curr, pad1, opt)
 
             if images_prev == []:
-                I_prev = m(in_s)
+                I_prev = AudioSample.static_pad(in_s, pad1, opt)
                 #I_prev = m(I_prev)
                 #I_prev = I_prev[:,:,0:z_curr.shape[2],0:z_curr.shape[3]]
                 #I_prev = functions.upsampling(I_prev,z_curr.shape[2],z_curr.shape[3])
             else:
                 I_prev = images_prev[i]
-                I_prev = imresize(I_prev,1/opt.scale_factor, opt)
+                #I_prev = imresize(I_prev,1/opt.scale_factor, opt)
+                I_prev = AudioSample.resample_to_julius_static(I_prev, opt.SR_pyr[n-1], opt.SR_pyr[n])
                 if opt.mode != "SR":
-                    I_prev = I_prev[:, :, 0:round(scale_v * reals[n].shape[2]), 0:round(scale_h * reals[n].shape[3])]
-                    I_prev = m(I_prev)
-                    I_prev = I_prev[:,:,0:z_curr.shape[2],0:z_curr.shape[3]]
-                    I_prev = functions.upsampling(I_prev,z_curr.shape[2],z_curr.shape[3])
+                    I_prev = I_prev[:, :, 0:round(scale_v * reals[n].shape[2])]
+                    I_prev = AudioSample.static_pad(I_prev, pad1, opt)
+                    I_prev = I_prev[:,:,0:z_curr.shape[2]]
+                    #I_prev = functions.upsampling(I_prev,z_curr.shape[2],z_curr.shape[3])
+                    #I_prev = AudioSample.resample_to_julius_static(I_prev, opt.SR_pyr[n - 1], opt.SR_pyr[n])
+                    if z_curr.shape != I_prev.shape:
+                        print("We got a problem")
+                        print(z_curr.shape)
+                        print(I_prev.shape)
+                        if I_prev.shape[2] < z_curr.shape[2]:
+                            dif = z_curr.shape[2] - I_prev.shape[2]
+                            I_prev = torch.cat((I_prev, torch.zeros([1, 1, dif], dtype=torch.float32)), dim=2)
                 else:
-                    I_prev = m(I_prev)
+                    I_prev = AudioSample.static_pad(I_prev, pad1, opt)
 
             if n < gen_start_scale:
                 z_curr = Z_opt
 
-            z_in = noise_amp*(z_curr)+I_prev
+            z_in = noise_amp*(z_curr)+I_prev #z_curr: 582, I_prev: 492
             I_curr = G(z_in.detach(),I_prev)
 
             if n == len(reals)-1:
                 if opt.mode == 'train':
                     dir2save = '%s/RandomSamples/%s/gen_start_scale=%d' % (opt.out, opt.input_name[:-4], gen_start_scale)
                 else:
-                    dir2save = functions.generate_dir2save(opt)
+                    if opt.mode == 'random_samples_audio':
+                        dir2save = '%s/RandomSamples/%s/gen_start_scale=%d' % (opt.out, opt.input_name[:-4], opt.gen_start_scale)
                 try:
                     os.makedirs(dir2save)
                 except OSError:
                     pass
                 if (opt.mode != "harmonization") & (opt.mode != "editing") & (opt.mode != "SR") & (opt.mode != "paint2image"):
-                    plt.imsave('%s/%d.png' % (dir2save, i), functions.convert_image_np(I_curr.detach()), vmin=0,vmax=1)
+                    #plt.imsave('%s/%d.png' % (dir2save, i), functions.convert_image_np(I_curr.detach()), vmin=0,vmax=1)
+                    AudioSample.static_save(I_curr.detach(), opt.SR_pyr[-1], '%s/%d.wav' % (dir2save, i))
                     #plt.imsave('%s/%d_%d.png' % (dir2save,i,n),functions.convert_image_np(I_curr.detach()), vmin=0, vmax=1)
                     #plt.imsave('%s/in_s.png' % (dir2save), functions.convert_image_np(in_s), vmin=0,vmax=1)
             images_cur.append(I_curr)
