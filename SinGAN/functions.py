@@ -192,7 +192,7 @@ def save_networks(netG,netD,z,opt):
     torch.save(netD.state_dict(), '%s/netD.pth' % (opt.outf))
     torch.save(z, '%s/z_opt.pth' % (opt.outf))
 
-def adjust_scales2image(real_,opt):
+def adjust_scales2data(real_,opt):
     #opt.num_scales = int((math.log(math.pow(opt.min_size / (real_.shape[2]), 1), opt.scale_factor_init))) + 1
     opt.num_scales = math.ceil((math.log(math.pow(opt.min_size / (min(real_.shape[2], real_.shape[3])), 1), opt.scale_factor_init))) + 1
     scale2stop = math.ceil(math.log(min([opt.max_size, max([real_.shape[2], real_.shape[3]])]) / max([real_.shape[2], real_.shape[3]]),opt.scale_factor_init))
