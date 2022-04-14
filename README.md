@@ -1,4 +1,4 @@
-My version has minor bugfixes to update it to moder python versions.
+My version has minor bugfixes to update it to modern python versions.
 
 # SinGAN
 
