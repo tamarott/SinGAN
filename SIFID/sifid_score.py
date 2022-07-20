@@ -212,7 +212,7 @@ def _compute_statistics_of_path(files, model, batch_size, dims, cuda):
         f.close()
     else:
         path = pathlib.Path(path)
-        files = list(path.glob('*.jpg'))+ list(path.glob('*.png'))
+        files = sorted(list(path.glob('*.jpg'))+ list(path.glob('*.png')))
         m, s = calculate_activation_statistics(files, model, batch_size,
                                                dims, cuda)
 
@@ -229,10 +229,10 @@ def calculate_sifid_given_paths(path1, path2, batch_size, cuda, dims, suffix):
         model.cuda()
 
     path1 = pathlib.Path(path1)
-    files1 = list(path1.glob('*.%s' %suffix))
+    files1 = sorted(list(path1.glob('*.%s' %suffix)))
 
     path2 = pathlib.Path(path2)
-    files2 = list(path2.glob('*.%s' %suffix))
+    files2 = sorted(list(path2.glob('*.%s' %suffix)))
 
     fid_values = []
     Im_ind = []
