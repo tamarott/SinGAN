@@ -33,16 +33,28 @@ If you use this code for your research, please cite our paper:
 
 ### Install dependencies
 
+This code was tested with python 3.6, torch 1.4. Using newer versions is likely to produce runtime errors as well as different performance.
+
+For later torch versions, you may try this repository: https://github.com/kligvasser/SinGAN (results won't necessarily be identical to the official implementation and cpu is not an option).
+#### Install python 3.6, torch 1.4 - MacOS/Linux
+
+Install Anaconda package manager (needed, since they have correct older binaries in their repos).
+On macOS (assuming you have homebrew) it can be installed with:
 ```
-python -m pip install -r requirements.txt
+brew install --cask anaconda
 ```
 
-This code was tested with python 3.6, torch 1.4
+Then:
+```
+conda create --name singanEnvironment
+conda activate singanEnvironment
+```
+'activate' might produce a warning regarding shell integration, follow instructions of conda
 
-Please note: the code currently only supports torch 1.4 or earlier because of the optimization scheme.
-
-For later torch versions, you may try this repository: https://github.com/kligvasser/SinGAN (results won't necessarily be identical to the official implementation).
-
+```
+conda install pytorch==1.4.0 torchvision==0.5.0 -c pytorch
+conda install --file requirements.txt
+```
 
 ###  Train
 To train SinGAN model on your own image, put the desired training image under Input/Images, and run
