@@ -52,6 +52,7 @@ conda activate singanEnvironment
 'activate' might produce a warning regarding shell integration, follow instructions of conda
 
 ```
+conda install python==3.6.13
 conda install pytorch==1.4.0 torchvision==0.5.0 -c pytorch
 conda install --file requirements.txt
 ```
