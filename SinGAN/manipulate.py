@@ -22,7 +22,7 @@ from config import get_arguments
 
 def generate_gif(Gs,Zs,reals,NoiseAmp,opt,alpha=0.1,beta=0.9,start_scale=2,fps=10):
 
-    in_s = torch.full(Zs[0].shape, 0, device=opt.device)
+    in_s = torch.full(Zs[0].shape, 0, dtype=torch.float32, device=opt.device)
     images_cur = []
     count = 0
 
@@ -89,7 +89,7 @@ def generate_gif(Gs,Zs,reals,NoiseAmp,opt,alpha=0.1,beta=0.9,start_scale=2,fps=1
 def SinGAN_generate(Gs,Zs,reals,NoiseAmp,opt,in_s=None,scale_v=1,scale_h=1,n=0,gen_start_scale=0,num_samples=50):
     #if torch.is_tensor(in_s) == False:
     if in_s is None:
-        in_s = torch.full(reals[0].shape, 0, device=opt.device)
+        in_s = torch.full(reals[0].shape, 0, dtype=torch.float32, device=opt.device)
     images_cur = []
     for G,Z_opt,noise_amp in zip(Gs,Zs,NoiseAmp):
         pad1 = ((opt.ker_size-1)*opt.num_layer)/2

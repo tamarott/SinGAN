@@ -58,7 +58,7 @@ if __name__ == '__main__':
             reals_sr.append(real_)
             Gs_sr.append(Gs[-1])
             NoiseAmp_sr.append(NoiseAmp[-1])
-            z_opt = torch.full(real_.shape, 0, device=opt.device)
+            z_opt = torch.full(real_.shape, 0, dtype=torch.float32, device=opt.device)
             m = nn.ZeroPad2d(5)
             z_opt = m(z_opt)
             Zs_sr.append(z_opt)
