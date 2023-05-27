@@ -3,3 +3,7 @@ Output/
 TrainedModels/
 __pycache__/
 .idea
+*.ipr
+*.iws
+*.iml
+.DS_Store/

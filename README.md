@@ -1,3 +1,5 @@
+My version has minor bugfixes to update it to modern python versions.
+
 # SinGAN
 
 [Project](https://tamarott.github.io/SinGAN.htm) | [Arxiv](https://arxiv.org/pdf/1905.01164.pdf) | [CVF](http://openaccess.thecvf.com/content_ICCV_2019/papers/Shaham_SinGAN_Learning_a_Generative_Model_From_a_Single_Natural_Image_ICCV_2019_paper.pdf) | [Supplementary materials](https://openaccess.thecvf.com/content_ICCV_2019/supplemental/Shaham_SinGAN_Learning_a_ICCV_2019_supplemental.pdf) | [Talk (ICCV`19)](https://youtu.be/mdAcPe74tZI?t=3191) 
@@ -33,16 +35,29 @@ If you use this code for your research, please cite our paper:
 
 ### Install dependencies
 
+This code was tested with python 3.6, torch 1.4. Using newer versions is likely to produce runtime errors as well as different performance.
+
+For later torch versions, you may try this repository: https://github.com/kligvasser/SinGAN (results won't necessarily be identical to the official implementation and cpu is not an option).
+#### Install python 3.6, torch 1.4 - MacOS/Linux
+
+Install Anaconda package manager (needed, since they have correct older binaries in their repos).
+On macOS (assuming you have homebrew) it can be installed with:
 ```
-python -m pip install -r requirements.txt
+brew install --cask anaconda
 ```
 
-This code was tested with python 3.6, torch 1.4
+Then:
+```
+conda create --name singanEnvironment
+conda activate singanEnvironment
+```
+'activate' might produce a warning regarding shell integration, follow instructions of conda
 
-Please note: the code currently only supports torch 1.4 or earlier because of the optimization scheme.
-
-For later torch versions, you may try this repository: https://github.com/kligvasser/SinGAN (results won't necessarily be identical to the official implementation).
-
+```
+conda install python==3.6.13
+conda install pytorch==1.4.0 torchvision==0.5.0 -c pytorch
+conda install --file requirements.txt
+```
 
 ###  Train
 To train SinGAN model on your own image, put the desired training image under Input/Images, and run
